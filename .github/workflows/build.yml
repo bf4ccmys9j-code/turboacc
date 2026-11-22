@@ -8,12 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout 补丁仓库
-        uses: actions/checkout@v4
-        id: patch
-        with:
-          fetch-depth: 1
-
       - name: Checkout ImmortalWrt 25.12
         uses: actions/checkout@v4
         with:
@@ -31,16 +25,16 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-      - name: 应用上游补丁 + 复制包文件
+      - name: 拉取TurboACC、Fullconenat源码
         run: |
           rm -rf package/network/services/fullconenat
           rm -rf package/network/services/fullconenat-nft
           rm -rf package/qca/shortcut-fe
-          cp -r ${{ steps.patch.outputs.repository_root }}/lede/fullconenat package/network/services/
-          cp -r ${{ steps.patch.outputs.repository_root }}/lede/fullconenat-nft package/network/services/
-          cp -r ${{ steps.patch.outputs.repository_root }}/lede/shortcut-fe package/qca/
-          cp -r ${{ steps.patch.outputs.repository_root }}/lede/hack-6.12 target/linux/generic/
-          cp -r ${{ steps.patch.outputs.repository_root }}/lede/patches .
+          git clone https://github.com/rufengsuixing/luci-app-turboacc.git package/network/services/fullconenat
+          git clone https://github.com/fullcone-nat-nftables/fullconenat-nft.git package/network/services/fullconenat-nft
+          git clone https://github.com/immortalwrt/packages.git --depth 1 tmp_pkgs
+          cp -r tmp_pkgs/net/shortcut-fe package/qca/shortcut-fe
+          rm -rf tmp_pkgs
 
       - name: 配置 .config（Cudy TR3000 v1 MT7981）
         run: |
