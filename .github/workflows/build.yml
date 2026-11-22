@@ -8,16 +8,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 补丁仓库（就是你当前这个turboacc仓库）
-        uses: actions/checkout@v7
-        name: checkout-patch-repo
+      - name: Checkout 补丁仓库
+        uses: actions/checkout@v4
         id: patch
         with:
           fetch-depth: 1
 
       - name: Checkout ImmortalWrt 25.12
         uses: actions/checkout@v4
-        name: checkout-immortalwrt
         with:
           repository: immortalwrt/immortalwrt
           ref: openwrt-25.12
@@ -35,21 +33,18 @@ jobs:
 
       - name: 应用上游补丁 + 复制包文件
         run: |
-          # 复制 fullconenat / fullconenat-nft / shortcut-fe
           rm -rf package/network/services/fullconenat
           rm -rf package/network/services/fullconenat-nft
           rm -rf package/qca/shortcut-fe
           cp -r ${{ steps.patch.outputs.repository_root }}/lede/fullconenat package/network/services/
           cp -r ${{ steps.patch.outputs.repository_root }}/lede/fullconenat-nft package/network/services/
           cp -r ${{ steps.patch.outputs.repository_root }}/lede/shortcut-fe package/qca/
-
-          # 复制内核hack补丁
           cp -r ${{ steps.patch.outputs.repository_root }}/lede/hack-6.12 target/linux/generic/
           cp -r ${{ steps.patch.outputs.repository_root }}/lede/patches .
 
       - name: 配置 .config（Cudy TR3000 v1 MT7981）
         run: |
-          cat > .config <<EOF
+          cat > .config <<'EOF'
 CONFIG_TARGET_mediatek=y
 CONFIG_TARGET_mediatek_filogic=y
 CONFIG_TARGET_mediatek_filogic_DEVICE_cudy_tr3000_v1=y
@@ -65,7 +60,7 @@ EOF
           make package/network/services/fullconenat-nft/compile -j$(nproc)
           make package/qca/shortcut-fe/compile -j$(nproc)
 
-      - name: 上传 APK
+      - name: 上传APK
         uses: actions/upload-artifact@v4
         with:
           name: turboacc-apk-output
