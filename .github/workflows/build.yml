@@ -45,14 +45,14 @@ jobs:
       - name: 配置 .config（Cudy TR3000 v1 MT7981）
         run: |
           cat > .config <<'EOF'
-CONFIG_TARGET_mediatek=y
-CONFIG_TARGET_mediatek_filogic=y
-CONFIG_TARGET_mediatek_filogic_DEVICE_cudy_tr3000_v1=y
-CONFIG_PACKAGE_kmod-shortcut-fe=m
-CONFIG_PACKAGE_shortcut-fe=m
-CONFIG_PACKAGE_fullconenat-nft=m
-CONFIG_PACKAGE_luci-app-turboacc=m
-EOF
+          CONFIG_TARGET_mediatek=y
+          CONFIG_TARGET_mediatek_filogic=y
+          CONFIG_TARGET_mediatek_filogic_DEVICE_cudy_tr3000_v1=y
+          CONFIG_PACKAGE_kmod-shortcut-fe=m
+          CONFIG_PACKAGE_shortcut-fe=m
+          CONFIG_PACKAGE_fullconenat-nft=m
+          CONFIG_PACKAGE_luci-app-turboacc=m
+          EOF
           make defconfig
 
       - name: 编译
