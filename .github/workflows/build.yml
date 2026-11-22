@@ -30,9 +30,9 @@ jobs:
           rm -rf package/network/services/fullconenat
           rm -rf package/network/services/fullconenat-nft
           rm -rf package/qca/shortcut-fe
-          git clone https://github.com/rufengsuixing/luci-app-turboacc.git package/network/services/fullconenat
-          git clone https://github.com/fullcone-nat-nftables/fullconenat-nft.git package/network/services/fullconenat-nft
-          git clone https://github.com/immortalwrt/packages.git --depth 1 tmp_pkgs
+          git clone https://ghproxy.com/https://github.com/rufengsuixing/luci-app-turboacc.git package/network/services/fullconenat
+          git clone https://ghproxy.com/https://github.com/fullcone-nat-nftables/fullconenat-nft.git package/network/services/fullconenat-nft
+          git clone https://ghproxy.com/https://github.com/immortalwrt/packages.git --depth 1 tmp_pkgs
           cp -r tmp_pkgs/net/shortcut-fe package/qca/shortcut-fe
           rm -rf tmp_pkgs
 
